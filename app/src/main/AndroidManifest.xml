@@ -3,12 +3,15 @@
     package="me.zsr.talkcheapshowcode" >
 
     <application
+        android:name=".App"
         android:allowBackup="true"
+        android:logo="@mipmap/ic_launcher"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoneTranslucent"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
