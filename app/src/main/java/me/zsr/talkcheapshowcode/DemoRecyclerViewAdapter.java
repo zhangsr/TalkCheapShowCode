@@ -13,6 +13,8 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -21,16 +23,20 @@ import butterknife.ButterKnife;
  * @author: Zhangshaoru
  * @date: 9/24/15
  */
-public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerViewAdapter.CardTextViewHolder> {
+public class DemoRecyclerViewAdapter extends RecyclerView.Adapter<DemoRecyclerViewAdapter.CardTextViewHolder> {
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
-    private String[] mTitles = {
-            "circular-progress-button",
-    };
+    private List<DemoCatogery.Demo> mDemoList;
 
-    public CardRecyclerViewAdapter(Context context) {
+    public DemoRecyclerViewAdapter(Context context, List<DemoCatogery.Demo> list) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
+        mDemoList = list;
+    }
+
+    public void setNewDemoList(List<DemoCatogery.Demo> list) {
+        mDemoList = list;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -40,9 +46,10 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
 
     @Override
     public void onBindViewHolder(CardTextViewHolder holder, int position) {
-        holder.mmTextView.setText(mTitles[position]);
+        DemoCatogery.Demo demo = mDemoList.get(position);
+        holder.mmTextView.setText(demo.name);
         DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setUri(Uri.parse("asset:///circular_progress_button.gif"))
+                .setUri(Uri.parse("asset:///" + demo.thumbnail))
                 .setAutoPlayAnimations(true)
                 .build();
         holder.mmSimpleDraweeView.setController(controller);
@@ -50,7 +57,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
 
     @Override
     public int getItemCount() {
-        return mTitles == null ? 0 : mTitles.length;
+        return mDemoList == null ? 0 : mDemoList.size();
     }
 
     public class CardTextViewHolder extends RecyclerView.ViewHolder {

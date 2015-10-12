@@ -17,6 +17,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    sourceSets {
+        main {
+            java {
+                srcDir 'src/main/java'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -27,5 +38,26 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
     compile 'com.facebook.stetho:stetho:1.2.0'
+    compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.facebook.fresco:fresco:0.7.0+'
+    compile project(':match_library_common')
 }
+
+task copySrc(type: Copy)
+copySrc {
+    description = 'Copies source file to resource directory for reading in run time'
+    from 'src/main/java/me/zsr/talkcheapshowcode/'
+    into 'src/main/assets/src/'
+    include('**/*')
+    rename { String fileName ->
+        fileName.replace('.java', ".txt")
+    }
+}
+preBuild.dependsOn copySrc
+preBuild.mustRunAfter copySrc
+
+task clearAssets(type: Delete) {
+    delete 'src/main/assets/src/'
+}
+copySrc.dependsOn clearAssets
+copySrc.mustRunAfter clearAssets

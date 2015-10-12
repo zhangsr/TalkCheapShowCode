@@ -8,3 +8,6 @@
 /.idea/
 *.iml
 
+# Generate file
+app/src/main/assets/src
+
